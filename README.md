@@ -113,6 +113,7 @@ DROP USER 'alunoatividade'@'localhost';
 
 ## Arquivos
 
+- `permissoes.sql` — exercício opcional de criação e revogação de permissões; requer conta administrativa.
 - [consertodolele.sql](./consertodolele.sql) — estrutura, dados e consultas da atividade;
 - [Atividade 2 - SQL.pdf](./Atividade%202%20%20-SQL.pdf) — material acadêmico utilizado como referência.
 
@@ -120,10 +121,19 @@ DROP USER 'alunoatividade'@'localhost';
 
 1. Instale um sistema gerenciador de banco de dados compatível com MySQL.
 2. Abra o arquivo `consertodolele.sql`.
-3. Execute os comandos por etapas.
+3. Em um ambiente de estudo MySQL, com o banco `consertodolele` ainda inexistente, execute `consertodolele.sql`. A tabela de peças é criada antes das inserções e dos pedidos. O script cria 10 peças e 5 pedidos.
+   O script não apaga nem reinicializa bancos existentes: uma segunda execução gera erro de banco/tabelas já existentes. Para repetir, utilize outro ambiente descartável.
+   O esquema de peças foi reconstruído a partir das colunas usadas no exercício; não representa um modelo original recuperado.
+   Opcionalmente, execute `permissoes.sql` separadamente com uma conta administrativa. Ele cria, concede, revoga e remove o usuário didático; não execute se esse usuário já existir.
 4. Confira a criação das tabelas, os registros e o retorno das consultas.
 
-## Tecnologias
+## Validação após a importação
+
+Execute `tests/verificar.sql` no cliente MySQL após carregar o script principal em um banco descartável. Ele sinaliza erro se contagens, relacionamentos, filtros ou ordenação divergirem do esperado. A conta usada nesse teste precisa poder criar e remover uma procedure. O exercício de permissões é opcional e separado desse teste.
+
+O workflow `SQL MySQL` executa o script completo e essas verificações em um serviço MySQL 8.0 descartável. Também executa `permissoes.sql` e confirma a remoção do usuário didático ao final. O banco e a senha desse serviço existem somente durante o teste.
+
+## Tecnologias utilizadas
 
 - SQL;
 - MySQL;
@@ -142,3 +152,4 @@ O conteúdo foi produzido colaborativamente para fins educacionais e não repres
 ## Aprendizados
 
 A atividade reforçou a relação entre estrutura de dados, regras de negócio e consultas SQL, além da importância de documentar um banco de dados para que outra pessoa consiga compreendê-lo e executá-lo.
+

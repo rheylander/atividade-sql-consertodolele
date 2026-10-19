@@ -1,0 +1,37 @@
+name: SQL MySQL
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mysql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci-only-password
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -pci-only-password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Criar banco e executar script completo
+        env:
+          MYSQL_CONTAINER: ${{ job.services.mysql.id }}
+        run: docker exec -i -e MYSQL_PWD=ci-only-password "$MYSQL_CONTAINER" mysql --default-character-set=utf8mb4 -uroot < consertodolele.sql
+      - name: Verificar dados e consultas
+        env:
+          MYSQL_CONTAINER: ${{ job.services.mysql.id }}
+        run: docker exec -i -e MYSQL_PWD=ci-only-password "$MYSQL_CONTAINER" mysql --default-character-set=utf8mb4 -uroot < tests/verificar.sql
+      - name: Testar ciclo de permissoes
+        env:
+          MYSQL_CONTAINER: ${{ job.services.mysql.id }}
+        run: |
+          docker exec -i -e MYSQL_PWD=ci-only-password "$MYSQL_CONTAINER" mysql -uroot < permissoes.sql
+          remaining=$(docker exec -e MYSQL_PWD=ci-only-password "$MYSQL_CONTAINER" mysql -uroot -NB -e "SELECT COUNT(*) FROM mysql.user WHERE User='alunoatividade' AND Host='localhost'")
+          test "$remaining" = "0"
