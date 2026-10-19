@@ -2,6 +2,18 @@ CREATE DATABASE consertodolele;
 USE consertodolele;
 
 
+-- Estrutura mínima usada pelas inserções e pela chave estrangeira.
+CREATE TABLE pecascomputador (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome_peca VARCHAR(100) NOT NULL,
+    quantidade INT NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    fornecedor VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    rua_fornecedor VARCHAR(150),
+    cep_fornecedor VARCHAR(10)
+);
+
 -- Inserindo dados
 INSERT INTO pecascomputador(
     nome_peca,
@@ -16,7 +28,7 @@ VALUES
     ('Memória RAM 8GB',
     15,
     220.00,
-    "TechMemory",
+    'TechMemory',
     '11988776655',
     'Rua da Tecnologia, 100',
     '01010-000'
@@ -100,7 +112,7 @@ VALUES
 -- Usando SELECT para consulta
 
 -- 5. Todos os dados
-    SELECT * FROM pecascomputador
+    SELECT * FROM pecascomputador;
 
 -- 6. Fornecedor e telefone
     SELECT fornecedor, telefone
@@ -121,7 +133,7 @@ VALUES
     SELECT *
     FROM pecascomputador
     WHERE nome_peca 
-    LIKE '%Tech%'
+    LIKE '%RAM%'
     OR fornecedor = 'Periféricos SP';
 
 -- 10. LIKE para fornecedores com 'Tech'
@@ -138,12 +150,13 @@ VALUES
 -- 12 . Ordem por valor DESC
     SELECT *
     FROM pecascomputador
+    ORDER BY valor DESC, id ASC
     LIMIT 4;
 
 
-    ==========================================
-    == TABELA PEDIDO DO CLIENTE
-    ===========================================
+    -- ==========================================
+    -- == TABELA PEDIDO DO CLIENTE
+    -- ===========================================
 
     CREATE TABLE pedidocliente (
         idcliente INT PRIMARY KEY AUTO_INCREMENT,
@@ -203,17 +216,5 @@ FROM pecascomputador p
 INNER JOIN pedidocliente c ON p.id = c.idproduto
 ORDER BY p.valor DESC;
 
---Parte Usuários
---5. CRiar usuário
-CREATE USER 'alunoatividade'@'localhost'
-IDENTIFIED BY 'senha123';
+-- Exercício opcional de permissões: ver permissoes.sql.
 
---6. Conceder SELECT
-GRANT SELECT ON consertodolele. * 
-TO 'alunoatividade'@'localhost';
-
--- 7. Revogar SELECT
-REVOKE SELECT ON consertodolele.* FROM 'alunoatividade'@'localhost';
- 
--- 8. Deletar usuário
-DROP USER 'alunoatividade'@'localhost';
