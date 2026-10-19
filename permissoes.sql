@@ -1,9 +1,9 @@
---Parte Usuários
---5. CRiar usuário
+-- Parte Usuários
+-- 5. CRiar usuário
 CREATE USER 'alunoatividade'@'localhost'
 IDENTIFIED BY 'senha123';
 
---6. Conceder SELECT
+-- 6. Conceder SELECT
 GRANT SELECT ON consertodolele.* 
 TO 'alunoatividade'@'localhost';
 

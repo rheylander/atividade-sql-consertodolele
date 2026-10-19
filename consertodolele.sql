@@ -168,7 +168,7 @@ VALUES
         FOREIGN KEY (idproduto) REFERENCES pecascomputador(id)
     );
 
-    --Inserção de 5 clientes (ligado a ids 1-5 das peças)
+    -- Inserção de 5 clientes (ligado a ids 1-5 das peças)
     INSERT INTO pedidocliente (
         nome,
         sobrenome,
@@ -203,14 +203,14 @@ VALUES
     '11955554444', 
     5);
 
---Parte JOINs
---INNER JOIN com WHERE(ex: valor > 300)
+-- Parte JOINs
+-- INNER JOIN com WHERE(ex: valor > 300)
 SELECT p.nome_peca, p.valor, c.nome, c.sobrenome
 FROM pecascomputador p
 INNER JOIN pedidocliente c ON p.id = c.idproduto
 WHERE p.valor > 300;
 
---INNER JOIN com 2 cols peças + 1 cliente, ORDER BY valor DESC
+-- INNER JOIN com 2 cols peças + 1 cliente, ORDER BY valor DESC
 SELECT p.nome_peca, p.fornecedor, c.nome, p.valor
 FROM pecascomputador p
 INNER JOIN pedidocliente c ON p.id = c.idproduto
